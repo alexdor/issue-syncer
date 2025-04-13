@@ -27,7 +27,7 @@ jobs:
         uses: reviewdog/action-misspell@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          fail_on_error: true
+          fail_level: error
           reporter: github-pr-review
 
 
