@@ -60,7 +60,7 @@ func (s *GithubStorer) Init(ctx context.Context) error {
 
 	*s = GithubStorer{
 		client: client,
-		labels: []string{"todo-syncer", "auto-generated"},
+		labels: []string{"issue-syncer", "auto-generated"},
 		owner:  ghOwnerAndRepoParts[0],
 		repo:   ghOwnerAndRepoParts[1],
 	}

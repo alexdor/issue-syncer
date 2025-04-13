@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/alexdor/todo-syncer/parser"
+	"github.com/alexdor/issue-syncer/parser"
 )
 
 type (

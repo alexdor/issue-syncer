@@ -13,8 +13,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/alexdor/todo-syncer/parser"
-	"github.com/alexdor/todo-syncer/storer"
+	"github.com/alexdor/issue-syncer/parser"
+	"github.com/alexdor/issue-syncer/storer"
 	"github.com/lmittmann/tint"
 	"github.com/spf13/cobra"
 )
@@ -57,7 +57,7 @@ var defaultDirsToSkip = []string{
 }
 
 var rootCmd = &cobra.Command{
-	Use:     "todo-syncer",
+	Use:     "issue-syncer",
 	Short:   "A tool to sync TODO comments with issues on GitHub",
 	Version: Version,
 	Long:    ``,

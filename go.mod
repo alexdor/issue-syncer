@@ -1,4 +1,4 @@
-module github.com/alexdor/todo-syncer
+module github.com/alexdor/issue-syncer
 
 go 1.23.6
 

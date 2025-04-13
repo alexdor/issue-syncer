@@ -4,6 +4,7 @@ description: Synchronize TODO comments in your code with GitHub issues
 branding:
   icon: check-square
   color: green
+author: alexdor
 inputs:
   dirs-to-skip:
     description: Directories to skip

@@ -31,16 +31,16 @@ jobs:
         include:
           - goos: linux
             goarch: amd64
-            binary: todo-syncer-linux-amd64
+            binary: issue-syncer-linux-amd64
           - goos: darwin
             goarch: amd64
-            binary: todo-syncer-darwin-amd64
+            binary: issue-syncer-darwin-amd64
           - goos: darwin
             goarch: arm64
-            binary: todo-syncer-darwin-arm64
+            binary: issue-syncer-darwin-arm64
           - goos: windows
             goarch: amd64
-            binary: todo-syncer-windows-amd64.exe
+            binary: issue-syncer-windows-amd64.exe
 
     steps:
       - uses: actions/checkout@v4
@@ -57,7 +57,7 @@ jobs:
           CGO_ENABLED: 0
         run: |
           go build -o ${{ matrix.binary }} \
-            -ldflags "-X github.com/alexdor/todo-syncer/cmd.Version=${{ needs.release-please.outputs.tag_name }}" \
+            -ldflags "-X github.com/alexdor/issue-syncer/cmd.Version=${{ needs.release-please.outputs.tag_name }}" \
             -trimpath
 
       - name: Upload Release Artifact

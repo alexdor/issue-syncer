@@ -1,8 +1,8 @@
-# todo-syncer
+# issue-syncer
 
-If you're anything like me, you have a habit of leaving TODOs, FIXMEs, and HACKs in your code. But keeping track of them can be a pain. That's where `todo-syncer` comes in!
+If you're anything like me, you have a habit of leaving TODOs, FIXMEs, and HACKs in your code. But keeping track of them can be a pain. That's where `issue-syncer` comes in!
 
-`todo-syncer` is a tool that automatically synchronizes TODO comments in your code with GitHub issues. It scans your codebase for special comments (like `TODO`, `FIXME`, or `HACK`), and creates, updates, or closes GitHub issues to track them.
+`issue-syncer` is a tool that automatically synchronizes TODO comments in your code with GitHub issues. It scans your codebase for special comments (like `TODO`, `FIXME`, or `HACK`), and creates, updates, or closes GitHub issues to track them.
 
 ## Features
 
@@ -17,14 +17,14 @@ If you're anything like me, you have a habit of leaving TODOs, FIXMEs, and HACKs
 ## Installation
 
 ```bash
-go install github.com/alexdor/todo-syncer@latest
+go install github.com/alexdor/issue-syncer@latest
 ```
 
 Or clone the repository and build manually:
 
 ```bash
-git clone https://github.com/alexdor/todo-syncer.git
-cd todo-syncer
+git clone https://github.com/alexdor/issue-syncer.git
+cd issue-syncer
 go build
 ```
 
@@ -53,17 +53,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Sync TODOs with Issues
-        uses: alexdor/todo-syncer@v1
+        uses: alexdor/issue-syncer@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 ### Command Line Interface
 
-You can also run `todo-syncer` directly from the command line. Here’s how to use it:
+You can also run `issue-syncer` directly from the command line. Here’s how to use it:
 
 ```bash
-todo-syncer [flags]
+issue-syncer [flags]
 ```
 
 #### Required Environment Variables
@@ -88,18 +88,18 @@ export GITHUB_REPOSITORY=<username>/<repository>
 Scan current directory with default settings:
 
 ```bash
-todo-syncer
+issue-syncer
 ```
 
 Scan a specific directory with custom comment markers:
 
 ```bash
-todo-syncer --path ./src --words "TODO,FIXME,NOTE"
+issue-syncer --path ./src --words "TODO,FIXME,NOTE"
 ```
 
 ## Supported Languages
 
-todo-syncer supports comments in many programming languages including:
+issue-syncer supports comments in many programming languages including:
 
 - Go
 - Python
@@ -119,7 +119,7 @@ todo-syncer supports comments in many programming languages including:
 2. For each comment found, it creates or updates a GitHub issue
 3. The issue title is derived from the comment text
 4. The issue body contains the file path, line number, and full comment text
-5. Issues are tagged with "todo-syncer" and "auto-generated" labels
+5. Issues are tagged with "issue-syncer" and "auto-generated" labels
 6. When a comment is removed from code, the corresponding issue is closed
 
 ## Contributing

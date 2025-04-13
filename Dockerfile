@@ -18,13 +18,13 @@ ENV GOOS=$TARGETOS
 ENV GOARCH=$TARGETARCH
 ENV CGO_ENABLED=0
 ENV GOROOT=/usr/lib/go
-RUN go build -o todo-syncer \
-  -ldflags "-X github.com/alexdor/todo-syncer/cmd.root=${VERSION}" \
+RUN go build -o issue-syncer \
+  -ldflags "-X github.com/alexdor/issue-syncer/cmd.root=${VERSION}" \
   -trimpath
 
 FROM --platform=$BUILDPLATFORM cgr.dev/chainguard/wolfi-base
 ENV LANG=C.UTF-8
 COPY --from=builder /usr/share/ca-certificates/ /usr/share/ca-certificates/
-COPY --from=builder /app/todo-syncer /usr/local/bin/todo-syncer
+COPY --from=builder /app/issue-syncer /usr/local/bin/issue-syncer
 
-ENTRYPOINT ["todo-syncer"]
+ENTRYPOINT ["issue-syncer"]
