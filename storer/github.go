@@ -43,7 +43,11 @@ func (s *GithubStorer) Init(ctx context.Context) error {
 
 	client := github.NewClient(tc)
 	apiURL := os.Getenv("GITHUB_API_URL")
+
 	if len(apiURL) > 0 {
+		if !strings.HasSuffix(apiURL, "/") {
+			apiURL += "/"
+		}
 		base, err := url.Parse(apiURL)
 		if err != nil {
 			return fmt.Errorf("failed to parse GITHUB_API_URL: %w", err)
