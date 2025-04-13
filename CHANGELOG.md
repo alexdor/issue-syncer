@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.2](https://github.com/alexdor/issue-syncer/compare/v1.0.0...v1.0.2) (2025-04-13)
+
+
+### chore
+
+* release 1.0.2 ([4f3f7ad](https://github.com/alexdor/issue-syncer/commit/4f3f7ad7b44a188a9bb3291e0e3d847c560e3eed))
+
+
+### Bugfixes
+
+* make sure github's api url ends with a '/' ([cb59045](https://github.com/alexdor/issue-syncer/commit/cb59045c4dc5a1e5de8ec5c060fbee8e366f8f01))
+
 ## 1.0.0 (2025-04-13)
 
 
