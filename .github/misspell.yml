@@ -1,0 +1,25 @@
+name: misspell
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: 0 12 * * 1-5
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check-misspell:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: sobolevn/misspell-fixer-action@master
+        with:
+          options: -rsvngRVDG --exclude=core/api/docs/* .
+      - uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "fix: Typo fixes by misspell-fixer"
+          title: "fix: Typos fix by misspell-fixer"

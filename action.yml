@@ -1,0 +1,25 @@
+name: 'TODO Syncer'
+description: 'Synchronize TODO comments in your code with GitHub issues'
+inputs:
+  path:
+    description: 'Path to scan for TODOs'
+    required: false
+    default: '.'
+  words:
+    description: 'Words to look for in comments'
+    required: false
+    default: 'TODO,FIXME,HACK'
+  dirs-to-skip:
+    description: 'Directories to skip'
+    required: false
+    default: ".git,node_modules,.cache,.next,_next,.vscode,dist,out,build,.tmp,.idea"
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - '--path'
+    - ${{ inputs.path }}
+    - '--words'
+    - ${{ inputs.words }}
+    - '-d'
+    - ${{ inputs.dirs-to-skip }}

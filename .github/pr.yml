@@ -1,0 +1,72 @@
+name: PR
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [synchronize, opened, reopened]
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  misspell:
+    name: Misspell 🕵️ - reviewdog
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    if: ${{ !startsWith(github.head_ref, 'renovate/') }}
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Check out code.
+        uses: actions/checkout@v4
+      - name: misspell
+        uses: reviewdog/action-misspell@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          fail_on_error: true
+          reporter: github-pr-review
+
+
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.24.x
+          cache: true
+      - name: Build 👷
+        run: go build ./...
+      - name: Test 🧪
+        run: go test -race ./...
+      - name: Dry Run
+        run: go run --race . --dry-run
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  golangci:
+    name: lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    if: ${{ !startsWith(github.head_ref, 'renovate/') }}
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.24.x
+          cache: true
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v7
+        with:
+          only-new-issues: true
