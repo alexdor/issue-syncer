@@ -1,25 +1,29 @@
-name: 'TODO Syncer'
-description: 'Synchronize TODO comments in your code with GitHub issues'
+---
+name: TODO Syncer
+description: Synchronize TODO comments in your code with GitHub issues
+branding:
+  icon: check-square
+  color: green
 inputs:
-  path:
-    description: 'Path to scan for TODOs'
-    required: false
-    default: '.'
-  words:
-    description: 'Words to look for in comments'
-    required: false
-    default: 'TODO,FIXME,HACK'
   dirs-to-skip:
-    description: 'Directories to skip'
+    description: Directories to skip
+    default: .git,node_modules,.cache,.next,_next,.vscode,dist,out,build,.tmp,.idea
     required: false
-    default: ".git,node_modules,.cache,.next,_next,.vscode,dist,out,build,.tmp,.idea"
+  path:
+    description: Path to scan for TODOs
+    default: .
+    required: false
+  words:
+    description: Words to look for in comments
+    default: TODO,FIXME,HACK
+    required: false
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: docker
+  image: Dockerfile
   args:
-    - '--path'
+    - -p
     - ${{ inputs.path }}
-    - '--words'
+    - -w
     - ${{ inputs.words }}
-    - '-d'
+    - -d
     - ${{ inputs.dirs-to-skip }}
