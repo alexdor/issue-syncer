@@ -1,5 +1,7 @@
 # todo-syncer
 
+If you're anything like me, you have a habit of leaving TODOs, FIXMEs, and HACKs in your code. But keeping track of them can be a pain. That's where `todo-syncer` comes in!
+
 `todo-syncer` is a tool that automatically synchronizes TODO comments in your code with GitHub issues. It scans your codebase for special comments (like `TODO`, `FIXME`, or `HACK`), and creates, updates, or closes GitHub issues to track them.
 
 ## Features
@@ -28,11 +30,43 @@ go build
 
 ## Usage
 
+### Add this to your workflow
+
+```yaml
+name: Sync TODOs
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  todo-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Sync TODOs with Issues
+        uses: alexdor/todo-syncer@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+### Command Line Interface
+
+You can also run `todo-syncer` directly from the command line. Here’s how to use it:
+
 ```bash
 todo-syncer [flags]
 ```
 
-### Required Environment Variables
+#### Required Environment Variables
 
 For GitHub integration:
 
@@ -41,7 +75,7 @@ export GITHUB_TOKEN=your_github_token
 export GITHUB_REPOSITORY=<username>/<repository>
 ```
 
-### Flags
+#### Flags
 
 - `-p, --path`: Path to the folder to scan (default: ".")
 - `-w, --words`: Words to look for in comments (default: ["FIXME", "TODO", "HACK"])
@@ -49,7 +83,7 @@ export GITHUB_REPOSITORY=<username>/<repository>
 - `-g, --use-gitignore`: Whether to use gitignore for skipping files (default: true)
 - `-s, --storer`: Storer to use (default: "github")
 
-### Examples
+#### Examples
 
 Scan current directory with default settings:
 
