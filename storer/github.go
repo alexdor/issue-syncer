@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+	"net/url"
 	"os"
 	"strconv"
 	"strings"
@@ -41,6 +42,14 @@ func (s *GithubStorer) Init(ctx context.Context) error {
 	tc := oauth2.NewClient(ctx, ts)
 
 	client := github.NewClient(tc)
+	apiURL := os.Getenv("GITHUB_API_URL")
+	if len(apiURL) > 0 {
+		base, err := url.Parse(apiURL)
+		if err != nil {
+			return fmt.Errorf("failed to parse GITHUB_API_URL: %w", err)
+		}
+		client.BaseURL = base
+	}
 	rateLimit, _, err := client.RateLimit.Get(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to get rate limit: %w", err)
