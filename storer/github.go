@@ -105,7 +105,7 @@ func (s GithubStorer) UpdateIssue(ctx context.Context, id string, issue Issue) e
 		return fmt.Errorf("failed to convert issue id %s : %w", id, err)
 	}
 
-	if ctx.Value("dry-run") != nil {
+	if ctx.Value(DryRunKey) != nil && ctx.Value(DryRunKey).(bool) {
 		slog.Info("dry-run, not updating issue", "title", issue.Title, "id", id, "body", issue.Body)
 		return nil
 	}
@@ -124,7 +124,7 @@ func (s GithubStorer) CreateIssue(ctx context.Context, issue Issue) error {
 		Labels: &s.labels,
 	}
 
-	if ctx.Value("dry-run") != nil {
+	if ctx.Value(DryRunKey) != nil && ctx.Value(DryRunKey).(bool) {
 		slog.Info("dry-run, not creating issue", "title", issue.Title, "body", issue.Body)
 		return nil
 	}
@@ -144,7 +144,7 @@ func (s GithubStorer) CloseIssue(ctx context.Context, id string) error {
 	if err != nil {
 		return fmt.Errorf("failed to convert issue id %s : %w", id, err)
 	}
-	if ctx.Value("dry-run") != nil {
+	if ctx.Value(DryRunKey) != nil && ctx.Value(DryRunKey).(bool) {
 		slog.Info("dry-run, not closing issue", "id", ghID)
 		return nil
 	}

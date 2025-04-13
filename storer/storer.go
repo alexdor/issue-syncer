@@ -10,20 +10,26 @@ import (
 	"github.com/alexdor/todo-syncer/parser"
 )
 
-type Issue struct {
-	Title     string
-	Body      string
-	ID        string
-	WannaBeID string
-}
+type (
+	Issue struct {
+		Title     string
+		Body      string
+		ID        string
+		WannaBeID string
+	}
 
-type Storer interface {
-	FetchCurrentOpenIssues(ctx context.Context) (map[string]Issue, error)
-	UpdateIssue(ctx context.Context, id string, issue Issue) error
-	CreateIssue(ctx context.Context, issue Issue) error
-	CloseIssue(ctx context.Context, id string) error
-	Init(ctx context.Context) error
-}
+	Storer interface {
+		FetchCurrentOpenIssues(ctx context.Context) (map[string]Issue, error)
+		UpdateIssue(ctx context.Context, id string, issue Issue) error
+		CreateIssue(ctx context.Context, issue Issue) error
+		CloseIssue(ctx context.Context, id string) error
+		Init(ctx context.Context) error
+	}
+
+	ContextKey string
+)
+
+const DryRunKey ContextKey = "dry-run"
 
 func generateAWannabeIDForComment(comment parser.Comment) string {
 	return fmt.Sprintf("%s:%v", comment.FilePath, comment.LineNumber)

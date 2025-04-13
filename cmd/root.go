@@ -26,6 +26,7 @@ var (
 	UseGitIgnore   bool
 	Storer         string
 	DryRun         bool
+	Version        string
 )
 
 func init() {
@@ -44,7 +45,10 @@ func init() {
 	// rootCmd.Flags().BoolVarP(
 	// 	&UseGitIgnore, "use-gitignore", "g", true, "Wether to use the content of gitignore to not search in them, or not",
 	// )
-	rootCmd.Flags().StringVarP(&Storer, "storer", "s", "github", "Storer to use for checking and updating issues, available: "+strings.Join(slices.Collect(maps.Keys(storer.AvailableStorer)), ","))
+	rootCmd.Flags().StringVarP(&Storer, "storer", "s", "github",
+		"Storer to use for checking and updating issues, available: "+
+			strings.Join(slices.Collect(maps.Keys(storer.AvailableStorer)), ","),
+	)
 	rootCmd.Flags().BoolVar(&DryRun, "dry-run", false, "Wether to do a dry run or not")
 }
 
@@ -53,28 +57,31 @@ var defaultDirsToSkip = []string{
 }
 
 var rootCmd = &cobra.Command{
-	Use:   "todo-syncer",
-	Short: "A tool to sync TODO comments with issues on GitHub",
-	Long:  ``,
+	Use:     "todo-syncer",
+	Short:   "A tool to sync TODO comments with issues on GitHub",
+	Version: Version,
+	Long:    ``,
 	RunE: func(cob *cobra.Command, _ []string) error {
 		storerToUse, ok := storer.AvailableStorer[strings.ToLower(Storer)]
 		if !ok {
-			return errors.New("storer " + Storer + " is not available, available: " + strings.Join(slices.Collect(maps.Keys(storer.AvailableStorer)), ","))
-		}
-
-		if _, err := os.Stat(Path); err != nil {
-			return errors.New("folder for scanning wasn't found in " + Path)
+			return errors.New(
+				"storer " + Storer + " is not available, available: " +
+					strings.Join(slices.Collect(maps.Keys(storer.AvailableStorer)), ","),
+			)
 		}
 
 		if DryRun {
 			slog.Info("Running in dry run mode, no changes will be made")
-			cob.SetContext(context.WithValue(cob.Context(), "dry-run", true))
+			cob.SetContext(context.WithValue(cob.Context(), storer.DryRunKey, true))
 		}
 
 		for i := range WordsToLookFor {
 			WordsToLookFor[i] = strings.ToLower(WordsToLookFor[i])
 		}
 		comments, err := parser.ParseDirectory(Path, WordsToLookFor, DirsToSkip, UseGitIgnore)
+		if err != nil {
+			return fmt.Errorf("failed to parse directory: %w", err)
+		}
 
 		err = storerToUse.Init(cob.Context())
 		if err != nil {
@@ -104,9 +111,9 @@ func Execute() {
 		<-signalChan // second signal, hard exit
 		os.Exit(2)
 	}()
-	defer cancel()
 
 	err := rootCmd.ExecuteContext(ctx)
+	cancel()
 	if err != nil {
 		os.Exit(1)
 	}
