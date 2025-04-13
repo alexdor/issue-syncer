@@ -7,15 +7,18 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  issues: write
+  contents: read
+
 jobs:
   update-issues:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    - name: Sync TODOs with Issues
-      uses: alexdor/todo-syncer@main
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Sync TODOs with Issues
+        uses: alexdor/todo-syncer@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
