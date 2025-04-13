@@ -1,0 +1,68 @@
+name: Release Please
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - uses: google-github-actions/release-please-action@v4
+        id: release
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  build:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - goos: linux
+            goarch: amd64
+            binary: todo-syncer-linux-amd64
+          - goos: darwin
+            goarch: amd64
+            binary: todo-syncer-darwin-amd64
+          - goos: darwin
+            goarch: arm64
+            binary: todo-syncer-darwin-arm64
+          - goos: windows
+            goarch: amd64
+            binary: todo-syncer-windows-amd64.exe
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.24.x
+          cache: true
+
+      - name: Build for ${{ matrix.goos }}-${{ matrix.goarch }}
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+          CGO_ENABLED: 0
+        run: |
+          go build -o ${{ matrix.binary }} \
+            -ldflags "-X github.com/alexdor/todo-syncer/cmd.Version=${{ needs.release-please.outputs.tag_name }}" \
+            -trimpath
+
+      - name: Upload Release Artifact
+        uses: AButler/upload-release-assets@v3.0
+        with:
+          files: ${{ matrix.binary }}
+          release-tag: ${{ needs.release-please.outputs.tag_name }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
