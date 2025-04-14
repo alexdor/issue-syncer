@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.3](https://github.com/alexdor/issue-syncer/compare/v1.0.2...v1.0.3) (2025-04-14)
+
+
+### Bugfixes
+
+* pass correct issue id on close issue ([e29cd35](https://github.com/alexdor/issue-syncer/commit/e29cd3581868849f11aa5b762a336b06b40a6630))
+
+
+### Performance Improvements
+
+* fetch open issues while looking through the fs ([18d8884](https://github.com/alexdor/issue-syncer/commit/18d888449869b5e0afb51a0f79610c732c12dd62))
+
 ## [1.0.2](https://github.com/alexdor/issue-syncer/compare/v1.0.0...v1.0.2) (2025-04-13)
 
 
