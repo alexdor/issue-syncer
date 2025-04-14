@@ -85,10 +85,10 @@ func UpdateIssues(ctx context.Context, s Storer, currentIssues map[string]Issue,
 				comment.FilePath, comment.LineNumber, comment.LineNumberEnd, err)
 		}
 	}
-	for id := range currentIssues {
-		err := s.CloseIssue(ctx, id)
+	for _, issue := range currentIssues {
+		err := s.CloseIssue(ctx, issue.ID)
 		if err != nil {
-			return fmt.Errorf("failed to delete issue %s : %w", id, err)
+			return fmt.Errorf("failed to delete issue %s : %w", issue.ID, err)
 		}
 	}
 	return nil
