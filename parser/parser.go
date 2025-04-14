@@ -2,6 +2,7 @@ package parser
 
 import (
 	"bufio"
+	"context"
 	"errors"
 	"fmt"
 	"log/slog"
@@ -141,12 +142,14 @@ func parseFile(filePath string, marker CommentMarker, wordsToLookFor []string) (
 }
 
 // ParseDirectory walks through a directory and finds all comments
-func ParseDirectory(rootPath string, wordsToLookFor []string, pathsToSkip []string, useGitIgnore bool) ([]Comment, error) {
+func ParseDirectory(ctx context.Context, rootPath string, wordsToLookFor, pathsToSkip []string, useGitIgnore bool) ([]Comment, error) {
 	var comments []Comment
-
 	err := filepath.WalkDir(rootPath, func(path string, d os.DirEntry, err error) error {
 		if err != nil {
 			return err
+		}
+		if ctx.Err() != nil {
+			return ctx.Err()
 		}
 
 		if slices.Contains(pathsToSkip, d.Name()) {

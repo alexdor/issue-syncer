@@ -17,6 +17,7 @@ import (
 	"github.com/alexdor/issue-syncer/storer"
 	"github.com/lmittmann/tint"
 	"github.com/spf13/cobra"
+	"golang.org/x/sync/errgroup"
 )
 
 var (
@@ -75,25 +76,43 @@ var rootCmd = &cobra.Command{
 			cob.SetContext(context.WithValue(cob.Context(), storer.DryRunKey, true))
 		}
 
-		for i := range WordsToLookFor {
-			WordsToLookFor[i] = strings.ToLower(WordsToLookFor[i])
-		}
-		comments, err := parser.ParseDirectory(Path, WordsToLookFor, DirsToSkip, UseGitIgnore)
-		if err != nil {
-			return fmt.Errorf("failed to parse directory: %w", err)
+		var (
+			comments      []parser.Comment
+			currentIssues map[string]storer.Issue
+		)
+
+		ctx := cob.Context()
+		g, gctx := errgroup.WithContext(ctx)
+
+		g.Go(func() error {
+			if err := storerToUse.Init(ctx); err != nil {
+				return fmt.Errorf("failed to initialize storer: %w", err)
+			}
+			var err error
+			currentIssues, err = storerToUse.FetchCurrentOpenIssues(gctx)
+			if err != nil {
+				return fmt.Errorf("failed to fetch current open issues: %w", err)
+			}
+			return nil
+		})
+
+		g.Go(func() error {
+			for i := range WordsToLookFor {
+				WordsToLookFor[i] = strings.ToLower(WordsToLookFor[i])
+			}
+			var err error
+			comments, err = parser.ParseDirectory(gctx, Path, WordsToLookFor, DirsToSkip, UseGitIgnore)
+			if err != nil {
+				return fmt.Errorf("failed to parse directory: %w", err)
+			}
+			return nil
+		})
+
+		if err := g.Wait(); err != nil {
+			return err
 		}
 
-		err = storerToUse.Init(cob.Context())
-		if err != nil {
-			return fmt.Errorf("failed to create storer: %w", err)
-		}
-
-		currentIssues, err := storerToUse.FetchCurrentOpenIssues(cob.Context())
-		if err != nil {
-			return fmt.Errorf("failed to fetch current open issues: %w", err)
-		}
-
-		return storer.UpdateIssues(cob.Context(), storerToUse, currentIssues, comments)
+		return storer.UpdateIssues(ctx, storerToUse, currentIssues, comments)
 	},
 }
 
