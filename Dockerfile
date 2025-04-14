@@ -1,5 +1,6 @@
 FROM --platform=$BUILDPLATFORM cgr.dev/chainguard/wolfi-base AS builder
 ARG VERSION=1.24
+ARG APP_VERSION=edge
 ARG TARGETOS TARGETARCH
 ENV LANG=C.UTF-8
 RUN apk update && \
@@ -19,7 +20,7 @@ ENV GOARCH=$TARGETARCH
 ENV CGO_ENABLED=0
 ENV GOROOT=/usr/lib/go
 RUN go build -o issue-syncer \
-  -ldflags "-X github.com/alexdor/issue-syncer/cmd.root=${VERSION}" \
+  -ldflags "-X github.com/alexdor/issue-syncer/cmd.root=${APP_VERSION}}" \
   -trimpath
 
 FROM --platform=$BUILDPLATFORM cgr.dev/chainguard/wolfi-base
