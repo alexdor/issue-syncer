@@ -53,7 +53,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Sync TODOs with Issues
-        uses: alexdor/issue-syncer@v1.0.2 # x-release-please-version
+        uses: alexdor/issue-syncer@v1.0.3 # x-release-please-version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
