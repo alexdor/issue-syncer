@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.4](https://github.com/alexdor/issue-syncer/compare/v1.0.3...v1.0.4) (2025-05-10)
+
+
+### Bugfixes
+
+* **deps:** update module golang.org/x/oauth2 to v0.30.0 ([9846c53](https://github.com/alexdor/issue-syncer/commit/9846c531f742182772bdf11198b164a4a0bf0f59))
+* **deps:** update module golang.org/x/sync to v0.14.0 ([8ccdbc7](https://github.com/alexdor/issue-syncer/commit/8ccdbc7b566aeacf2bd8811a8b020d2e10347753))
+
 ## [1.0.3](https://github.com/alexdor/issue-syncer/compare/v1.0.2...v1.0.3) (2025-04-14)
 
 
