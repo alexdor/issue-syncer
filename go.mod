@@ -7,7 +7,7 @@ require (
 	github.com/lmittmann/tint v1.0.7
 	github.com/spf13/cobra v1.9.1
 	golang.org/x/oauth2 v0.29.0
-	golang.org/x/sync v0.13.0
+	golang.org/x/sync v0.14.0
 )
 
 require (
