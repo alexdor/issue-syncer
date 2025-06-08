@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.0.4](https://github.com/alexdor/issue-syncer/compare/v1.0.3...v1.0.4) (2025-06-08)
+
+
+### Bugfixes
+
+* **deps:** update module github.com/google/go-github/v71 to v72 ([e696d62](https://github.com/alexdor/issue-syncer/commit/e696d628edf6605c8d29536f0e5888f9a48dd033))
+* **deps:** update module github.com/lmittmann/tint to v1.1.0 ([4068bd5](https://github.com/alexdor/issue-syncer/commit/4068bd5294eabfb2aa3f3849cc61df17808c6211))
+* **deps:** update module github.com/lmittmann/tint to v1.1.1 ([7e7487b](https://github.com/alexdor/issue-syncer/commit/7e7487bef1731ee2fe25cf459f25828bfb8e2283))
+* **deps:** update module github.com/lmittmann/tint to v1.1.2 ([97614ea](https://github.com/alexdor/issue-syncer/commit/97614ea236ece62638ada8ab0fc0dbbc2e92ecc8))
+* **deps:** update module golang.org/x/oauth2 to v0.30.0 ([9846c53](https://github.com/alexdor/issue-syncer/commit/9846c531f742182772bdf11198b164a4a0bf0f59))
+* **deps:** update module golang.org/x/sync to v0.14.0 ([8ccdbc7](https://github.com/alexdor/issue-syncer/commit/8ccdbc7b566aeacf2bd8811a8b020d2e10347753))
+* **deps:** update module golang.org/x/sync to v0.15.0 ([5f2a3d4](https://github.com/alexdor/issue-syncer/commit/5f2a3d413a64f73a44a03669e7aaeb1be400c242))
+
 ## [1.0.3](https://github.com/alexdor/issue-syncer/compare/v1.0.2...v1.0.3) (2025-04-14)
 
 
