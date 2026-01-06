@@ -18,7 +18,7 @@ jobs:
       - uses: sobolevn/misspell-fixer-action@master
         with:
           options: -rsvngRVDG --exclude=core/api/docs/* .
-      - uses: peter-evans/create-pull-request@v7
+      - uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "fix: Typo fixes by misspell-fixer"
