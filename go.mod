@@ -1,6 +1,6 @@
 module github.com/alexdor/issue-syncer
 
-go 1.23.6
+go 1.25.0
 
 require (
 	github.com/google/go-github/v71 v71.0.0
@@ -8,7 +8,7 @@ require (
 	github.com/lmittmann/tint v1.1.2
 	github.com/spf13/cobra v1.9.1
 	golang.org/x/oauth2 v0.30.0
-	golang.org/x/sync v0.15.0
+	golang.org/x/sync v0.20.0
 )
 
 require (
