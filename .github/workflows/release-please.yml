@@ -61,7 +61,7 @@ jobs:
             -trimpath
 
       - name: Upload Release Artifact
-        uses: AButler/upload-release-assets@v3.0
+        uses: AButler/upload-release-assets@v4.0.0
         with:
           files: ${{ matrix.binary }}
           release-tag: ${{ needs.release-please.outputs.tag_name }}
